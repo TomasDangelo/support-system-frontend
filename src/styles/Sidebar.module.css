@@ -1,0 +1,64 @@
+.sidebar {
+  background-color: #1e1e2f;
+  color: white;
+  padding: 1rem;
+  height: 100vh;
+  position: sticky;
+  display: flex;
+  flex-direction: column;
+}
+
+nav a {
+  display: block;
+  color: white;
+  text-decoration: none;
+  margin: 1rem 0;
+}
+
+
+.logout {
+  background-color: #e63946;
+  border: none;
+  padding: 0.7rem;
+  cursor: pointer;
+  color: white;
+  margin-top: auto;
+}
+
+.toggleBtn {
+  display: none;
+}
+
+
+@media (max-width: 768px) { 
+  .toggleBtn {
+    display: block;
+    width: auto;
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    z-index: 1000; 
+    background-color: #f8fafc;
+    color: #1e1e2f;
+    border: none;
+    padding: 0.6rem 1rem;
+    font-size: 1.5rem;
+    cursor: pointer;
+    
+  }
+  
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 200px;
+    height: 100vh;
+    transform: translateX(0);
+    transition: transform 0.3s ease;
+    z-index: 99;
+  }
+
+  .sidebar.closed {
+    transform: translateX(-100%);
+  }
+}
