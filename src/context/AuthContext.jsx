@@ -4,23 +4,25 @@ import axios from "../api/axios";
 export const AuthContext = createContext();
 
 export const AuthProvider = ({children}) =>{
-    const [user, setUser] = useState(() => {
-        const storedUser = localStorage.getItem('user');
-        try {
-          return storedUser ? JSON.parse(storedUser) : null;
-        } catch (e) {
-          console.error("Error parseando user desde localStorage:", e);
-          return null;
-        }
-      });
+  let storedUser = null;
+  try {
+    const parsed = JSON.parse(localStorage.getItem('user'));
+    if (parsed && typeof parsed === 'object') storedUser = parsed;
+  } catch (e) {
+    storedUser = null;
+    console.error("Error con el user en localstorage: ", e)
+  }
+  
+  const [user, setUser] = useState(storedUser);
       
 
     const login = async (email, password) =>{
         try {
-            const {data} = await axios.post('/login.php', {email, password});
+            const {data} = await axios.post('/login', {email, password});
             if (!data || !data.token) {
                 throw new Error("Respuesta inválida del servidor");
               }
+            console.log(data.user)
             localStorage.setItem('user', JSON.stringify(data.user));
             localStorage.setItem('token', data.token);
             setUser(data.user);

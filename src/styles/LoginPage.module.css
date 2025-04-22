@@ -28,7 +28,7 @@ input {
     border-radius: 4px;
 }
 
-button {
+.btnSubmit {
     width: 100%;
     padding: 0.8rem;
     border-radius: 8px;
@@ -39,9 +39,6 @@ button {
     transition: all 0.3s ease-in-out;
 }
 
-button:hover{
-    scale: 1.1;
-}
 
 .error {
     color: red;

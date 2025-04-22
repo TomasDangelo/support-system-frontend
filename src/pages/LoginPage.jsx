@@ -37,7 +37,7 @@ const handleSubmit = async (e) => {
         <input name="email" type="email" placeholder='Email' value={form.email} onChange={handleChange} required/>
         <input name="password" type="password" placeholder='Contraseña' value={form.password} onChange={handleChange} required/>
         {error && <p className={styles.error}>{error}</p>}
-        <button type='submit'>Ingresar</button>
+        <button className={styles.btnSubmit} type='submit'>Ingresar</button>
       </form>
     </div>
   )
