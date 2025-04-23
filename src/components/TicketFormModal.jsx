@@ -4,26 +4,14 @@ import axios from '../api/axios';
 
 const TicketFormModal = ({isOpen, onClose, ticket = null, onUpdated}) => {
 const isEditing = Boolean(ticket); // null o true para diferenciar creacion de edición
-const [formData, setFormData] = useState({
-    subject: '',
-    message: '',
-    priority: 'medium'
-})
+const [formData, setFormData] = useState({ subject: '', message: '', priority: 'medium'})
 
 useEffect(()=>{ // Cuando se abre el modal y hay un ticket, seteo los valores
     if (ticket) {
-        setFormData({
-            subject: ticket.subject,
-            message: ticket.message,
-            priority: ticket.priority,
-        })
+        setFormData({ subject: ticket.subject, message: ticket.message, priority: ticket.priority, })
     }
     else{
-        setFormData({
-            subject: '',
-            message: '',
-            priority: 'medium',
-        })
+        setFormData({ subject: '', message: '', priority: 'medium',})
     }
 },[ticket])
 

@@ -8,9 +8,16 @@ const translationsES = {
   message: "Mensaje",
   status: "Estado",
   priority: "Prioridad",
-  createdAt: "Creado en",
+  createdAt: "Creado el",
   logTitle: "Historial de cambios",
   noLogs: "No hay logs",
+  newValue: "Nuevo valor",
+  oldValue: "Valor previo",
+  edit: "Editar",
+  close: "Cerrar",
+  archive: "Archivar",
+  sortOldest: "Ordenar ascendentemente",
+  sortNewest: "Ordenar descendentemente",
   actions: {
     update_status: "Cambio de estado",
     update_priority: "Cambio de prioridad",
@@ -30,7 +37,7 @@ const translationsES = {
 };
 
 export const LanguageProvider = ({ children }) => {
-  const [lang] = useState('es'); // podrías expandir a 'en', 'fr', etc.
+  const [lang] = useState('es'); //  expandir a 'en'
 
   const getTranslations = () => {
     switch (lang) {

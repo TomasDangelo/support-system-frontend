@@ -9,7 +9,7 @@ const navigate = useNavigate();
 const [form, setForm] = useState({ email: '', password: '' });
 const [error, setError] = useState('');
 const {login} = useAuth()
-
+const user = localStorage.getItem('user'); 
 const handleChange = (e) => {
   const {name, value} = e.target;
   setForm((prevForm) => ({
@@ -32,6 +32,11 @@ const handleSubmit = async (e) => {
 
   return (
     <div className={styles.loginContainer}>
+      {user? (
+        <div>
+          <h4>Bienvenido! </h4>
+        </div>
+      ) : (
       <form onSubmit={handleSubmit} className={styles.form}>
         <h2 className={styles.title}>Iniciar sesion</h2>
         <input name="email" type="email" placeholder='Email' value={form.email} onChange={handleChange} required/>
@@ -39,6 +44,8 @@ const handleSubmit = async (e) => {
         {error && <p className={styles.error}>{error}</p>}
         <button className={styles.btnSubmit} type='submit'>Ingresar</button>
       </form>
+
+      )}
     </div>
   )
 }

@@ -21,6 +21,7 @@ const Sidebar = () => {
 
   const handleLogout = () => {
     localStorage.removeItem('token');
+    localStorage.removeItem('user');
     navigate('/login');
   };
 
@@ -37,7 +38,7 @@ const Sidebar = () => {
           <a href="/dashboard">Dashboard</a>
           <a href="/profile">Mi cuenta</a>
         </nav>
-        <button className={styles.logout} onClick={handleLogout}>Logout</button>
+        <button className={styles.logout} onClick={handleLogout}>Cerrar sesión</button>
       </aside>
     </>
   );

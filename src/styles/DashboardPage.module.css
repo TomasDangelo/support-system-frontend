@@ -70,3 +70,8 @@
     font-weight: bold;
     color: #10b981; /* verde */
   }
+
+  .btnVer{
+    background-color: steelblue;
+    margin: 1rem;
+  }

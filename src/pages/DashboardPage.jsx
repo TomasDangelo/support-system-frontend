@@ -9,19 +9,20 @@ const Dashboard = () => {
   const [statusFilter, setStatusFilter] = useState('all');
   const [priorityFilter, setPriorityFilter] = useState('all');
   const [showForm, setShowForm] = useState(false);
+  const [viewMine, setViewMine] = useState(false);
 
   const fetchTickets = async () => {
     try {
       const token = localStorage.getItem('token');
-      // Armamos query dinámico
+      const headers = { Authorization: `Bearer ${token}` };
       const params = new URLSearchParams();
       if (statusFilter !== 'all') params.append('status', statusFilter);
       if (priorityFilter !== 'all') params.append('priority', priorityFilter);
 
-      const res = await axios.get(`/tickets/filter?${params.toString()}`, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-
+      //Dependiendo de si viewMine es true, mostramos solo los del usuario o todos
+      const url = viewMine ? `/tickets/mine?${params.toString()}` : `/tickets/filter?${params.toString()}`;
+  
+      const res = await axios.get(url, { headers });
       setTickets(res.data);
     } catch (err) {
       console.error('Error cargando tickets:', err);
@@ -29,13 +30,14 @@ const Dashboard = () => {
   };
   useEffect(() => {
     fetchTickets();
-  }, [statusFilter, priorityFilter]); // Ejecuta cuando cambian
+  }, [statusFilter, priorityFilter, viewMine]); // Ejecuta cuando cambian
 
   return (
     <div className={styles.dashboardContainer}>
       <h1 className={styles.title}>Tickets</h1>
       
       <button onClick={()=> setShowForm(true)}>+ Crear ticket</button>  
+      <button className={styles.btnVer} onClick={()=> setViewMine(prev => !prev)}>{viewMine? 'Ver todos': 'Ver solo mis tickets'}</button>
       <TicketFormModal isOpen={showForm} onClose={()=> setShowForm(false)} onUpdated={fetchTickets} />
       <div className={styles.filters}>
         <div className={styles.selectParent}>
