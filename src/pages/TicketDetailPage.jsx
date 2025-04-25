@@ -78,10 +78,12 @@ const TicketDetailPage = () => {
 
       </div>
   </div>
-
+        {logs.length > 0 && 
         <button className={styles.ticketButtons} onClick={toggleSortOrder}>
           {sortOrder === 'desc' ? translations.sortOldest : translations.sortNewest}
         </button>
+
+        }
 <TicketFormModal isOpen={editOpen} onClose={() => setEditOpen(false)} ticket={ticket} onUpdated={() => window.location.reload()}/>
       <h2>{translations.logTitle}</h2>
       <ul className={styles.logList}>

@@ -16,8 +16,8 @@ const translationsES = {
   edit: "Editar",
   close: "Cerrar",
   archive: "Archivar",
-  sortOldest: "Ordenar ascendentemente",
-  sortNewest: "Ordenar descendentemente",
+  sortOldest: "Ordenar ascendentemente ↑",
+  sortNewest: "Ordenar descendentemente ↓",
   actions: {
     update_status: "Cambio de estado",
     update_priority: "Cambio de prioridad",

@@ -1,0 +1,56 @@
+.tableParent {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 2rem;
+    overflow: hidden;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  }
+  
+  .tHead {
+    background-color: rgb(34, 34, 175);
+    color: white;
+  }
+  
+  .tHead th {
+    padding: 0.75rem;
+    text-align: center;
+    font-weight: 500;
+  }
+  
+  .rowParent {
+    border: none;
+  }
+  
+  tbody tr {
+    border-bottom: 1px solid #e0e0e0; 
+  }
+  
+  .userData {
+    padding: 0.75rem;
+    text-align: center;
+    font-size: 0.95rem;
+    background-color: white;
+  }
+  
+  .userData select {
+    padding: 0.4rem;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    background-color: #f9f9f9;
+    cursor: pointer;
+    font-size: 0.9rem;
+  }
+  
+  .pagesContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 2rem;
+    gap: 1rem;
+  }
+  
+  .page {
+    font-weight: bold;
+  }
+  
