@@ -1,8 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from '../styles/Sidebar.module.css';
+import { AuthContext } from '../context/AuthContext';
 
 const Sidebar = () => {
+  const {user} = useContext(AuthContext);
   const [isOpen, setIsOpen] = useState(window.innerWidth > 768);
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   const navigate = useNavigate();
@@ -37,6 +39,7 @@ const Sidebar = () => {
         <nav>
           <a href="/dashboard">Dashboard</a>
           <a href="/profile">Mi cuenta</a>
+          {user?.role === 'admin' && <a href="/admin">Panel de administrador</a>}
         </nav>
         <button className={styles.logout} onClick={handleLogout}>Cerrar sesión</button>
       </aside>

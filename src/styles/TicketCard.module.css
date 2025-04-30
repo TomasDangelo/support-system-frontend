@@ -28,9 +28,14 @@
     padding: 0.3rem 0.6rem;
     border-radius: 4px;
     display: inline-block;
+  }
+  .statusOpen{
     background-color: #83fba3;
   }
-  
+  .statusClosed{
+    background-color: #ff6b6b;
+  }
+
   .priority{
     background-color: rgb(112, 112, 242);
   }

@@ -7,6 +7,7 @@ import { LanguageContext } from '../context/LanguageContext';
 const TicketCard = ({ ticket, onUpdate }) => {
 const [isEditing, setIsEditing] = useState(false);
 const {translations} = useContext(LanguageContext)
+const statusClassName = `${styles.status} ${ ticket.status === 'open' || ticket.status === 'in_progress' ? styles.statusOpen :  styles.statusClosed}`
 
 const navigate = useNavigate()
   return (
@@ -15,7 +16,7 @@ const navigate = useNavigate()
       <p className={styles.info}>{ticket.message}</p>
       <p className={styles.date}>{translations.createdAt} {new Date(ticket.created_at).toLocaleString()}</p>
       <div className={styles.meta}>
-        <span className={styles.status}>  {translations.statuses[ticket.status].charAt(0).toUpperCase() + translations.statuses[ticket.status].slice(1)}</span>
+        <span className={statusClassName}>  {translations.statuses[ticket.status].charAt(0).toUpperCase() + translations.statuses[ticket.status].slice(1)}</span>
         <span className={styles.priority}> {translations.priorities[ticket.priority].charAt(0).toUpperCase() + translations.priorities[ticket.priority].slice(1)}</span>
       </div>
       

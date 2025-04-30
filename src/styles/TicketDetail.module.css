@@ -33,6 +33,10 @@
   .container h2{
     margin-top: 2rem;
   }
+  
+  .container h3{
+    margin-bottom: 0.5rem;
+  }
 
   .oldValue, .newValue{
     font-weight: 600;
@@ -45,25 +49,47 @@
     background-color: rgb(112, 112, 242);
   }
 
-  .btnsParent{
+  .btnsParent, .closeParent{
     display: flex;
-    flex-direction: row;
-    justify-content: center;
-    width: 100%;
+    flex-direction: column;
     margin-top: 1rem;
-    gap: 0.5rem;
+    gap: 1rem;
   }
-  
-  .btnsParent .ticketButtons:nth-child(1) { 
-    background-color: #007bff;
-    color: white;
+
+  .closeParent{
+    flex-direction: row;
   }
+  .btnsParent select {
+    width: 50%;
+  }
+
   .btnsParent .ticketButtons:nth-child(2) { 
     background-color: crimson;
     color: white;
+    height: min-content;
   }
   
-  .btnsParent .ticketButtons:nth-child(3) { 
-    background-color: #555;
+  .assign button {
+    margin-left: 1rem;
+  }
+  
+  .closeParent textarea{
+    width: 80%;
+  }
+
+  .topBtnsParent{
+    display: flex;
+    gap: 1rem;
+    flex-direction: row;
+  }
+
+  .topBtnsParent .ticketButtons:nth-child(2) { 
+    background-color: cadetblue;
     color: white;
+  }
+
+  .topBtnsParent .ticketButtons:nth-child(3){ 
+    background-color: deeppink;
+    color: white;
+    margin-left: auto;
   }

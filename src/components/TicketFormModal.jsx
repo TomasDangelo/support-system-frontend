@@ -4,14 +4,14 @@ import axios from '../api/axios';
 
 const TicketFormModal = ({isOpen, onClose, ticket = null, onUpdated}) => {
 const isEditing = Boolean(ticket); // null o true para diferenciar creacion de edición
-const [formData, setFormData] = useState({ subject: '', message: '', priority: 'medium'})
+const [formData, setFormData] = useState({ subject: '', message: '', status:'', priority: 'medium'})
 
 useEffect(()=>{ // Cuando se abre el modal y hay un ticket, seteo los valores
     if (ticket) {
-        setFormData({ subject: ticket.subject, message: ticket.message, priority: ticket.priority, })
+        setFormData({ subject: ticket.subject, message: ticket.message, status: ticket.status, priority: ticket.priority, })
     }
     else{
-        setFormData({ subject: '', message: '', priority: 'medium',})
+        setFormData({ subject: '', message: '', status: '', priority: 'medium',})
     }
 },[ticket])
 
@@ -44,8 +44,17 @@ return (
       <div className={styles.modalContent}>
         <h2>{isEditing? 'Editar Ticket' : 'Nuevo ticket'}</h2>
         <form onSubmit={handleSubmit}>
+          <label>Asunto</label>
           <input name="subject" value={formData.subject} onChange={handleChange} placeholder="Asunto" required />
+          <label> Estado</label>
+          <select name="status" value={formData.status} onChange={handleChange}>
+          <option value="open">Abierto</option>
+          <option value="in_progress">En proceso</option>
+          <option value="closed">Cerrado</option>
+          </select>
+          <label>Mensaje</label>
           <textarea name="message" value={formData.message} onChange={handleChange} placeholder="Descripción" required />
+          <label>Prioridad</label>
           <select name="priority" value={formData.priority} onChange={handleChange}>
             <option value="low">Baja</option>
             <option value="medium">Media</option>

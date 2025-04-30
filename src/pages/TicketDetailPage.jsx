@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, Fragment } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from '../api/axios';
 import styles from '../styles/TicketDetail.module.css';
@@ -10,17 +10,26 @@ const TicketDetailPage = () => {
   const { id } = useParams();
   const [ticket, setTicket] = useState(null);
   const [logs, setLogs] = useState([]);
+  const [note, setNote] = useState('');
+  const [assignedUserId, setAssignedUserId] = useState('');
+  const [users, setUsers] = useState([]);
+  const [message, setMessage] = useState('');
   const { translations } = useContext(LanguageContext);
   const navigate = useNavigate();
   const [editOpen, setEditOpen] = useState(false);
   const [sortOrder, setSortOrder] = useState('desc')
 
+  const token = localStorage.getItem('token');
+  const headers = { Authorization: `Bearer ${token}` };
+
+
   const handleClose = async () => {
     try {
       const token = localStorage.getItem('token');
-      await axios.put('/tickets/close', { ticket_id: ticket.id }, {
+      await axios.put('/tickets/close', { ticket_id: ticket.id, closing_note: note}, {
         headers: { Authorization: `Bearer ${token}` }
       });
+      setMessage('Ticket cerrado correctamente');
       window.location.reload();
     } catch (err) {
       console.error("Error cerrando:", err);
@@ -38,46 +47,89 @@ const TicketDetailPage = () => {
       console.error("Error archivando:", err);
     }
   };
-  
-  const toggleSortOrder = () => { setSortOrder(prev => prev === 'desc' ? 'asc' : 'desc'); };
-  useEffect(() => {
-    const token = localStorage.getItem('token');
-    const headers = { Authorization: `Bearer ${token}` };
-    
-    const fetchData = async () => {
-      try {
-        const t = await axios.get(`/tickets/${id}`, { headers });
-        const l = await axios.get(`/tickets/logs?ticket_id=${id}`, { headers });
-        setTicket(t.data);
-        setLogs(l.data);
-      } catch (err) {
-        console.error('Error cargando detalles:', err);
-      }
-    };
+  const fetchData = async () => {
+    try {
+      const t = await axios.get(`/tickets/${id}`, { headers });
+      const l = await axios.get(`/tickets/logs?ticket_id=${id}`, { headers });
+      setTicket(t.data);
+      setLogs(l.data);
+    } catch (err) {
+      console.error('Error cargando detalles:', err);
+    }
+  };
 
+  useEffect(() => {
     fetchData();
   }, [id]);
 
+  const toggleSortOrder = () => { setSortOrder(prev => prev === 'desc' ? 'asc' : 'desc'); };
+
+  const fetchUsers = async() => {
+    try {
+        const res = await axios.get('/users/all?q=&limit=100&offset=0', { headers })
+        setUsers(res.data.users || []);
+    } catch (error) {
+      console.error('Error cargando usuarios', error);
+    }
+  }
+
+  useEffect(()=> {
+    if(ticket?.status !== 'closed'){
+      fetchUsers();
+    }
+  },[ticket])
+
+  const handleAssign = async () => {
+    try {
+      await axios.patch('/tickets/assign', { ticket_id: ticket.id, assigned_to: assignedUserId }, { headers });
+      setMessage('Ticket asignado correctamente');
+      fetchData();
+    } catch (err) {
+      console.error('Error al asignar ticket', err);
+      setMessage('Error al asignar ticket');
+    }
+  };
   if (!ticket) return <p>Error al cargar ticket...</p>;
 
   return (
     <div className={styles.container}>
       <h1>{translations.ticket} #{ticket.id}</h1>
+      <div className={styles.topBtnsParent}>
+      <button className={styles.ticketButtons} onClick={() => setEditOpen(true)}>{translations.edit}</button>
+      {ticket.status !== 'archived' && ( <button className={styles.ticketButtons} onClick={handleArchive}>{translations.archive}</button> )}
+      <button className={styles.ticketButtons} onClick={()=> navigate('/dashboard')}> ← Volver</button>
+      </div>
       <p><strong>{translations.subject}:</strong> {ticket.subject}</p>
       <p><strong>{translations.message}:</strong> {ticket.message}</p>
       <p><strong>{translations.status}:</strong> {translations.statuses[ticket.status] || ticket.status}</p>
       <p><strong>{translations.priority}:</strong> {translations.priorities[ticket.priority] || ticket.priority}</p>
       <p><strong>{translations.createdAt}:</strong> {ticket.created_at}</p>
-  <div className={styles.actions}>
+      <p><strong>Asignado a:</strong> {ticket.assigned_user || 'No asignado'}</p>
+      <p><strong>Cerrado por:</strong> {ticket.closed_by || '---'}</p>
+      <p><strong>Nota de cierre:</strong> {ticket.closing_note || '---'}</p>
       <div className={styles.btnsParent}>
-        <button className={styles.ticketButtons} onClick={() => setEditOpen(true)}>{translations.edit}</button>
 
-        {ticket.status !== 'closed' && ( <button className={styles.ticketButtons} onClick={handleClose}>{translations.close}</button> )}
-
-        {ticket.status !== 'archived' && ( <button className={styles.ticketButtons} onClick={handleArchive}>{translations.archive}</button> )}
+        {ticket.status !== 'closed' && users.length > 0 && (
+          <div className={styles.assign}>
+          <h3>Asignar a usuario</h3>
+          <select value={assignedUserId} onChange={(e) => setAssignedUserId(e.target.value)}>
+            <option value="">Seleccionar usuario</option>
+            {users.map(user => (
+              <option key={user.id} value={user.id}>{user.name}</option>
+            ))}
+          </select>
+          <button className={styles.ticketButtons} onClick={handleAssign}>Asignar</button>
+       </div>
+      )}
+      {ticket.status !== 'closed' && ( 
+        <div className={styles.closeParent}>
+          <textarea value={note} onChange={(e) => setNote(e.target.value)} placeholder="Notas de cierre (opcional)" />
+          <button className={styles.ticketButtons} onClick={handleClose}>{translations.close}</button> 
+        </div>
+        
+        )}
 
       </div>
-  </div>
         {logs.length > 0 && 
         <button className={styles.ticketButtons} onClick={toggleSortOrder}>
           {sortOrder === 'desc' ? translations.sortOldest : translations.sortNewest}
@@ -123,7 +175,8 @@ const TicketDetailPage = () => {
           })
         )}
       </ul>
-      <button onClick={()=> navigate('/dashboard')}>Volver</button>
+      {message && <Notification message={message} />}
+     
     </div>
   );
 };

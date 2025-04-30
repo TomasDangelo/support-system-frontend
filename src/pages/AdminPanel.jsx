@@ -14,7 +14,7 @@ const AdminPanel = () => {
   const [totalUsers, setTotalUsers] = useState(0);
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
-
+  const totalPages = Math.ceil(totalUsers / 5)
   // Debounce: espera 500ms luego de dejar de tipear
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -63,8 +63,8 @@ const AdminPanel = () => {
             <UserTable users={users} onRoleChange={setUsers} />
           <div className={styles.pagesContainer}>
             <button disabled={page <= 1} onClick={() => setPage(p => p - 1)}>Anterior</button>
-            <span className={styles.page}>Página {page}</span>
-            <button onClick={() => setPage(p => p + 1)}>Siguiente</button>
+            <span className={styles.page}>Página {page} de {totalPages}</span>
+            <button disabled={page >= totalPages} onClick={() => setPage(p => p + 1)}>Siguiente</button>
           </div>
             </>
         )}
