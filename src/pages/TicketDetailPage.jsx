@@ -5,6 +5,7 @@ import styles from '../styles/TicketDetail.module.css';
 import { LanguageContext } from '../context/LanguageContext';
 import { useNavigate } from 'react-router-dom';
 import TicketFormModal from '../components/TicketFormModal';
+import Notification from '../components/Notification';
 
 const TicketDetailPage = () => {
   const { id } = useParams();
@@ -13,7 +14,7 @@ const TicketDetailPage = () => {
   const [note, setNote] = useState('');
   const [assignedUserId, setAssignedUserId] = useState('');
   const [users, setUsers] = useState([]);
-  const [message, setMessage] = useState('');
+  const [message, setMessage] = useState(null);
   const { translations } = useContext(LanguageContext);
   const navigate = useNavigate();
   const [editOpen, setEditOpen] = useState(false);
@@ -30,23 +31,16 @@ const TicketDetailPage = () => {
         headers: { Authorization: `Bearer ${token}` }
       });
       setMessage('Ticket cerrado correctamente');
-      window.location.reload();
+      setTimeout(() => {
+        setMessage(null);
+        fetchData();
+      }, 3000);
     } catch (err) {
       console.error("Error cerrando:", err);
     }
   };
   
-  const handleArchive = async () => {
-    try {
-      const token = localStorage.getItem('token');
-      await axios.put('/tickets/update-status', { ticket_id: ticket.id, status: 'archived'}, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      window.location.reload();
-    } catch (err) {
-      console.error("Error archivando:", err);
-    }
-  };
+ 
   const fetchData = async () => {
     try {
       const t = await axios.get(`/tickets/${id}`, { headers });
@@ -74,9 +68,9 @@ const TicketDetailPage = () => {
   }
 
   useEffect(()=> {
-    if(ticket?.status !== 'closed'){
+
       fetchUsers();
-    }
+    
   },[ticket])
 
   const handleAssign = async () => {
@@ -96,7 +90,7 @@ const TicketDetailPage = () => {
       <h1>{translations.ticket} #{ticket.id}</h1>
       <div className={styles.topBtnsParent}>
       <button className={styles.ticketButtons} onClick={() => setEditOpen(true)}>{translations.edit}</button>
-      {ticket.status !== 'archived' && ( <button className={styles.ticketButtons} onClick={handleArchive}>{translations.archive}</button> )}
+  
       <button className={styles.ticketButtons} onClick={()=> navigate('/dashboard')}> ← Volver</button>
       </div>
       <p><strong>{translations.subject}:</strong> {ticket.subject}</p>
@@ -136,7 +130,7 @@ const TicketDetailPage = () => {
         </button>
 
         }
-<TicketFormModal isOpen={editOpen} onClose={() => setEditOpen(false)} ticket={ticket} onUpdated={() => window.location.reload()}/>
+<TicketFormModal isOpen={editOpen} users={users} onChange={setAssignedUserId} onClose={() => setEditOpen(false)} ticket={ticket} onUpdated={() => window.location.reload()}/>
       <h2>{translations.logTitle}</h2>
       <ul className={styles.logList}>
         {logs.length === 0 ? (
@@ -175,7 +169,8 @@ const TicketDetailPage = () => {
           })
         )}
       </ul>
-      {message && <Notification message={message} />}
+
+      <Notification message={message} type="success" />
      
     </div>
   );

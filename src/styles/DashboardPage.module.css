@@ -50,6 +50,7 @@
     height: auto;
     border-radius: 0.2rem;
     border: 0.2px solid lightblue;
+    cursor:  pointer;
   }
   .selectParent{
     display: flex;

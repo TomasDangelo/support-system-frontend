@@ -1,17 +1,21 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import styles from '../styles/TicketFormModal.module.css';
 import axios from '../api/axios';
+import { AuthContext } from '../context/AuthContext';
 
-const TicketFormModal = ({isOpen, onClose, ticket = null, onUpdated}) => {
+
+const TicketFormModal = ({isOpen, onChange, onClose, ticket = null, onUpdated, users}) => {
 const isEditing = Boolean(ticket); // null o true para diferenciar creacion de edición
-const [formData, setFormData] = useState({ subject: '', message: '', status:'', priority: 'medium'})
+const {user} = useContext(AuthContext); 
+const isAdmin = user.role === 'admin'
+const [formData, setFormData] = useState({ subject: '', message: '', assigned_to: '', status:'', priority: 'medium'})
 
 useEffect(()=>{ // Cuando se abre el modal y hay un ticket, seteo los valores
     if (ticket) {
-        setFormData({ subject: ticket.subject, message: ticket.message, status: ticket.status, priority: ticket.priority, })
+        setFormData({ subject: ticket.subject, message: ticket.message, assigned_to: ticket.assigned_to, status: ticket.status, priority: ticket.priority, })
     }
     else{
-        setFormData({ subject: '', message: '', status: '', priority: 'medium',})
+        setFormData({ subject: '', message: '', assigned_to: '',  status: '', priority: 'medium',})
     }
 },[ticket])
 
@@ -60,6 +64,19 @@ return (
             <option value="medium">Media</option>
             <option value="high">Alta</option>
           </select>
+          {isAdmin && (
+  <div>
+    <label>Asignado a:</label>
+    <select name="assigned_to" value={formData.assigned_to} onChange={(e) => onChange(e.target.value)}>
+      <option value="">Sin asignar</option>
+      {(users || []).map(user => (
+        <option key={user.id} value={user.id}>
+          {user.name}
+        </option>
+      ))}
+    </select>
+  </div>
+)}
           <button type="submit">Guardar</button>
           <button type="button" onClick={onClose} className={styles.cancelBtn}>Cancelar</button>
         </form>

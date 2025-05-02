@@ -2,7 +2,11 @@ import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from '../styles/Sidebar.module.css';
 import { AuthContext } from '../context/AuthContext';
-
+import { NavLink } from 'react-router-dom';
+import { AiOutlineUser  } from "react-icons/ai";
+import { FcStatistics } from "react-icons/fc";
+import { MdDashboard } from "react-icons/md";
+import { GrUserAdmin } from "react-icons/gr"
 const Sidebar = () => {
   const {user} = useContext(AuthContext);
   const [isOpen, setIsOpen] = useState(window.innerWidth > 768);
@@ -37,9 +41,11 @@ const Sidebar = () => {
       <aside className={`${styles.sidebar} ${!isOpen ? styles.closed : ''}`}>
         <h2>Soporte</h2>
         <nav>
-          <a href="/dashboard">Dashboard</a>
-          <a href="/profile">Mi cuenta</a>
-          {user?.role === 'admin' && <a href="/admin">Panel de administrador</a>}
+          <NavLink to="/dashboard" className={({isActive}) => isActive? styles.activeLink : styles.link}> <MdDashboard />Dashboard </NavLink>
+          <NavLink to="/profile" className={({isActive}) => isActive? styles.activeLink : styles.link}> <AiOutlineUser/> Mi cuenta </NavLink>
+          <NavLink to="/stats" className={({isActive}) => isActive? styles.activeLink : styles.link}> <FcStatistics /> Estadisticas </NavLink>
+          
+          {user?.role === 'admin' && <NavLink to="/admin" className={({isActive}) => isActive? styles.activeLink : styles.link}> <GrUserAdmin /> Panel de administrador </NavLink>}
         </nav>
         <button className={styles.logout} onClick={handleLogout}>Cerrar sesión</button>
       </aside>

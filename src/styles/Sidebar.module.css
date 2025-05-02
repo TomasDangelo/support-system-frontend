@@ -22,8 +22,6 @@ nav a {
   cursor: pointer;
   position: sticky;
   bottom: 0;
-
-  width: 100%;
   color: white;
   margin-top: auto; 
 }
@@ -64,4 +62,16 @@ nav a {
   .sidebar.closed {
     transform: translateX(-100%);
   }
+}
+
+.link, .activeLink {
+  padding: 0.5rem;
+  text-decoration: none;
+  border-radius: 5px;
+  color: white;
+}
+
+.activeLink {
+  background-color: #555589;
+  font-weight: bold;
 }

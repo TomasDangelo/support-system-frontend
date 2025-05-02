@@ -6,7 +6,7 @@ import UserAdmin from '../components/UserAdmin';
 import TicketDetailPage from '../pages/TicketDetailPage';
 import AdminPanel from '../pages/AdminPanel';
 import AccountPage from '../pages/AccountPage';
-
+import StatsPage from '../pages/StatsPage';
 const AppRouter = () => {
 
     return(
@@ -21,6 +21,7 @@ const AppRouter = () => {
                 <Route path='/tickets/:id' element={<TicketDetailPage/>}/>
                 <Route path='/admin/users' element={<UserAdmin/>}/>
                 <Route path='/profile' element={<AccountPage/>}/>
+                <Route path='/stats' element={<StatsPage/>}/>
                 <Route path='/admin' element=
 
              /*   <PrivateRoute roles={['admin']}> 

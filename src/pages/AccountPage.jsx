@@ -1,6 +1,8 @@
 import React, { useContext } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import styles from '../styles/AccountPage.module.css';
+import { AiOutlineUser, AiTwotoneMail  } from "react-icons/ai";
+import { RiAdminFill } from "react-icons/ri";
 
 const AccountPage = () => {
   const { user } = useContext(AuthContext);
@@ -10,9 +12,9 @@ const AccountPage = () => {
   return (
     <div className={styles.accountContainer}>
       <h2>Mi cuenta</h2>
-      <p><strong>Nombre:</strong> {user.name}</p>
-      <p><strong>Email:</strong> {user.email}</p>
-      <p><strong>Rol:</strong> {user.role === 'admin' ? 'Administrador' : 'Usuario'}</p>
+      <p> <AiOutlineUser /> <strong>Nombre:</strong> {user.name}</p>
+      <p> <AiTwotoneMail /> <strong>Email:</strong> {user.email}</p>
+      <p> <RiAdminFill /> <strong>Rol:</strong> {user.role === 'admin' ? 'Administrador' : 'Usuario'}</p>
     </div>
   );
 };

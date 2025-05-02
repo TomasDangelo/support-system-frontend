@@ -83,12 +83,12 @@
     flex-direction: row;
   }
 
-  .topBtnsParent .ticketButtons:nth-child(2) { 
+  .topBtnsParent .ticketButtons:nth-child(1) { 
     background-color: cadetblue;
     color: white;
   }
 
-  .topBtnsParent .ticketButtons:nth-child(3){ 
+  .topBtnsParent .ticketButtons:nth-child(2){ 
     background-color: deeppink;
     color: white;
     margin-left: auto;
