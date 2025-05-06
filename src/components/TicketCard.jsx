@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import TicketFormModal from './TicketFormModal';
 import { LanguageContext } from '../context/LanguageContext';
 
-const TicketCard = ({ ticket, onUpdate }) => {
+const TicketCard = ({ ticket, onUpdate, users }) => {
 const [isEditing, setIsEditing] = useState(false);
 const {translations} = useContext(LanguageContext)
 const statusClassName = `${styles.status} ${ ticket.status === 'open' || ticket.status === 'in_progress' ? styles.statusOpen :  styles.statusClosed}`
@@ -20,7 +20,9 @@ const navigate = useNavigate()
         <span className={styles.priority}> {translations.priorities[ticket.priority].charAt(0).toUpperCase() + translations.priorities[ticket.priority].slice(1)}</span>
       </div>
       
-      <div className={styles.btnsParent}> 
+      <div className={styles.btnsParent}>
+      <p>{ticket.assigned_to && users?.length > 0? ( <p> Asignado a: {users.find(u => u.id === ticket.assigned_to)?.name || 'No asignado'}</p> )   : 'No asignado'}</p>
+
       <button className={styles.ticketButtons} onClick={() => navigate(`/tickets/${ticket.id}`)}>Ver detalles</button>
       </div>
       <TicketFormModal isOpen={isEditing} onClose={()=> setIsEditing(false)} ticket={ticket} onUpdated={onUpdate} />

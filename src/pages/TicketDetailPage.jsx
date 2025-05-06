@@ -23,10 +23,25 @@ const TicketDetailPage = () => {
   const token = localStorage.getItem('token');
   const headers = { Authorization: `Bearer ${token}` };
 
+  const isJson = (str) => {
+    try {
+      const parsed = JSON.parse(str);
+      return typeof parsed === 'object' && parsed !== null;
+    } catch (e) {
+      console.error(e)
+      return false;
+    }
+  };
+  
 
+  const getUserNameById = (id) => {
+    const match = users.find(u => u.id == id);
+    return match ? match.name : `ID: ${id}`;
+  };
+  
+  
   const handleClose = async () => {
     try {
-      const token = localStorage.getItem('token');
       await axios.put('/tickets/close', { ticket_id: ticket.id, closing_note: note}, {
         headers: { Authorization: `Bearer ${token}` }
       });
@@ -75,14 +90,19 @@ const TicketDetailPage = () => {
 
   const handleAssign = async () => {
     try {
-      await axios.patch('/tickets/assign', { ticket_id: ticket.id, assigned_to: assignedUserId }, { headers });
+      await axios.put(
+        '/tickets/update',
+        { ticket_id: ticket.id, subject: ticket.subject, message: ticket.message, status: ticket.status, priority: ticket.priority, assigned_to: assignedUserId},
+        { headers }
+      );
       setMessage('Ticket asignado correctamente');
       fetchData();
     } catch (err) {
-      console.error('Error al asignar ticket', err);
+      console.error('Error al asignar ticket', err.response?.data || err.message);
       setMessage('Error al asignar ticket');
     }
   };
+  
   if (!ticket) return <p>Error al cargar ticket...</p>;
 
   return (
@@ -98,7 +118,7 @@ const TicketDetailPage = () => {
       <p><strong>{translations.status}:</strong> {translations.statuses[ticket.status] || ticket.status}</p>
       <p><strong>{translations.priority}:</strong> {translations.priorities[ticket.priority] || ticket.priority}</p>
       <p><strong>{translations.createdAt}:</strong> {ticket.created_at}</p>
-      <p><strong>Asignado a:</strong> {ticket.assigned_user || 'No asignado'}</p>
+      <p><strong>Asignado a:</strong> { users.find(u => u.id === ticket.assigned_to)?.name || 'No asignado'}</p>
       <p><strong>Cerrado por:</strong> {ticket.closed_by || '---'}</p>
       <p><strong>Nota de cierre:</strong> {ticket.closing_note || '---'}</p>
       <div className={styles.btnsParent}>
@@ -130,7 +150,7 @@ const TicketDetailPage = () => {
         </button>
 
         }
-<TicketFormModal isOpen={editOpen} users={users} onChange={setAssignedUserId} onClose={() => setEditOpen(false)} ticket={ticket} onUpdated={() => window.location.reload()}/>
+<TicketFormModal isOpen={editOpen} users={users}  onClose={() => setEditOpen(false)} ticket={ticket} onUpdated={() => window.location.reload()}/>
       <h2>{translations.logTitle}</h2>
       <ul className={styles.logList}>
         {logs.length === 0 ? (
@@ -144,15 +164,20 @@ const TicketDetailPage = () => {
             let oldValue = log.old_value;
             let newValue = log.new_value;
 
-            try {
-              const parsedOld = JSON.parse(log.old_value);
-              const parsedNew = JSON.parse(log.new_value);
-
-              oldValue = `${translations.subject}: ${parsedOld.subject}, ${translations.message}: ${parsedOld.message}`;
-              newValue = `${translations.subject}: ${parsedNew.subject}, ${translations.message}: ${parsedNew.message}`;
-            } catch (e){
-                console.error("Error parseando" , e)
-            }
+                  try {
+                 if (log.action === 'update_assigned') {
+                   oldValue = getUserNameById(log.old_value);
+                   newValue = getUserNameById(log.new_value);
+                 } else if (isJson(log.old_value) && isJson(log.new_value)) {
+                   const parsedOld = JSON.parse(log.old_value);
+                   const parsedNew = JSON.parse(log.new_value);
+                   oldValue = `${translations.subject}: ${parsedOld.subject}, ${translations.message}: ${parsedOld.message}`;
+                   newValue = `${translations.subject}: ${parsedNew.subject}, ${translations.message}: ${parsedNew.message}`;
+                 }
+                  }                
+                 catch (e) {
+                 console.error("Error parseando", e);
+                }
 
             return (
               <li key={log.id || index} className={styles.logItem}>

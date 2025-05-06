@@ -4,7 +4,7 @@ import axios from '../api/axios';
 import { AuthContext } from '../context/AuthContext';
 
 
-const TicketFormModal = ({isOpen, onChange, onClose, ticket = null, onUpdated, users}) => {
+const TicketFormModal = ({isOpen,  onClose, ticket = null, onUpdated, users}) => {
 const isEditing = Boolean(ticket); // null o true para diferenciar creacion de edición
 const {user} = useContext(AuthContext); 
 const isAdmin = user.role === 'admin'
@@ -67,7 +67,7 @@ return (
           {isAdmin && (
   <div>
     <label>Asignado a:</label>
-    <select name="assigned_to" value={formData.assigned_to} onChange={(e) => onChange(e.target.value)}>
+    <select name="assigned_to" value={formData.assigned_to} onChange={handleChange}>
       <option value="">Sin asignar</option>
       {(users || []).map(user => (
         <option key={user.id} value={user.id}>
