@@ -42,7 +42,13 @@ const TicketDetailPage = () => {
   
   const handleClose = async () => {
     try {
-      await axios.put('/tickets/close', { ticket_id: ticket.id, closing_note: note}, {
+      await axios.put('/tickets/update', {
+        ticket_id: ticket.id,
+        subject: ticket.subject,
+        message: ticket.message,
+        status: 'closed',
+        notes: note, 
+      }, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setMessage('Ticket cerrado correctamente');
@@ -54,6 +60,7 @@ const TicketDetailPage = () => {
       console.error("Error cerrando:", err);
     }
   };
+  
   
  
   const fetchData = async () => {
@@ -145,12 +152,14 @@ const TicketDetailPage = () => {
 
       </div>
         {logs.length > 0 && 
-        <button className={styles.ticketButtons} onClick={toggleSortOrder}>
+        <button className={styles.sortBtn} onClick={toggleSortOrder}>
           {sortOrder === 'desc' ? translations.sortOldest : translations.sortNewest}
         </button>
-
         }
+
 <TicketFormModal isOpen={editOpen} users={users}  onClose={() => setEditOpen(false)} ticket={ticket} onUpdated={() => window.location.reload()}/>
+
+        {/* Manejo y display de logs */}
       <h2>{translations.logTitle}</h2>
       <ul className={styles.logList}>
         {logs.length === 0 ? (
@@ -164,7 +173,7 @@ const TicketDetailPage = () => {
             let oldValue = log.old_value;
             let newValue = log.new_value;
 
-                  try {
+                try {
                  if (log.action === 'update_assigned') {
                    oldValue = getUserNameById(log.old_value);
                    newValue = getUserNameById(log.new_value);
@@ -174,6 +183,11 @@ const TicketDetailPage = () => {
                    oldValue = `${translations.subject}: ${parsedOld.subject}, ${translations.message}: ${parsedOld.message}`;
                    newValue = `${translations.subject}: ${parsedNew.subject}, ${translations.message}: ${parsedNew.message}`;
                  }
+                 else if (log.action === 'close_ticket') {
+                  oldValue = translations.status + ": " + translations.closed;
+                  newValue = log.note ? translations.note + ": " + log.note : "";
+                }
+                
                   }                
                  catch (e) {
                  console.error("Error parseando", e);

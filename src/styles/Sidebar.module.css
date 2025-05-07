@@ -8,6 +8,11 @@
   flex-direction: column;
 }
 
+nav {
+  position: fixed;
+  top: 0;
+  margin-top: 0.8rem;
+}
 nav a {
   display: block;
   color: white;
@@ -20,10 +25,12 @@ nav a {
   border: none;
   padding: 0.7rem;
   cursor: pointer;
-  position: sticky;
+  position: fixed;
   bottom: 0;
+  width: 11rem;
   color: white;
-  margin-top: auto; 
+  margin: auto auto 1rem auto;
+  align-self: center;
 }
 
 .toggleBtn {
@@ -71,6 +78,7 @@ nav a {
   color: white;
   display: flex;
   gap: 0.2rem;
+ 
 }
 
 .activeLink {

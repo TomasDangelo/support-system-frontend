@@ -3,7 +3,8 @@ import axios from '../api/axios';
 import TicketCard from '../components/TicketCard';
 import styles from '../styles/DashboardPage.module.css';
 import TicketFormModal from '../components/TicketFormModal';
-
+import { FaFilter } from "react-icons/fa";
+import { IoMdSearch } from "react-icons/io";
 const Dashboard = () => {
   const [tickets, setTickets] = useState([]);
   const [statusFilter, setStatusFilter] = useState('all');
@@ -81,12 +82,14 @@ const Dashboard = () => {
       </button>
 
       <TicketFormModal isOpen={showForm} users={users} onClose={() => setShowForm(false)} onUpdated={fetchTickets} />
-
-      <input type="text" placeholder="Buscar por asunto o mensaje..." value={query} onChange={(e) => setQuery(e.target.value)}/>
+      <div className={styles.searchParent}>
+      <IoMdSearch className={styles.searchIcon}/><input className={styles.searchInput} type="text" placeholder="Buscar por asunto o mensaje..." value={query} onChange={(e) => setQuery(e.target.value)}/>
+      </div>
 
       <div className={styles.filters}>
         <div className={styles.selectParent}>
-          <h4>Estado</h4>
+        <FaFilter />
+          <h4> Estado</h4>
           <select className={styles.selects} value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)}>
             <option value="all">Todos</option>
             <option value="open">Abiertos</option>
@@ -96,6 +99,7 @@ const Dashboard = () => {
         </div>
 
         <div className={styles.selectParent}>
+        <FaFilter />
           <h4>Prioridad</h4>
           <select className={styles.selects} value={priorityFilter} onChange={(e) => setPriorityFilter(e.target.value)}>
             <option value="all">Todas</option>

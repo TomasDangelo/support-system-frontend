@@ -39,8 +39,8 @@ const Sidebar = () => {
 
       )}
       <aside className={`${styles.sidebar} ${!isOpen ? styles.closed : ''}`}>
-        <h2>Soporte</h2>
         <nav>
+        <h2>MyTicket</h2>
           <NavLink to="/dashboard" className={({isActive}) => isActive? styles.activeLink : styles.link}> <MdDashboard />Dashboard </NavLink>
           <NavLink to="/profile" className={({isActive}) => isActive? styles.activeLink : styles.link}> <AiOutlineUser/> Mi cuenta </NavLink>
           <NavLink to="/stats" className={({isActive}) => isActive? styles.activeLink : styles.link}> <FcStatistics /> Estadisticas </NavLink>

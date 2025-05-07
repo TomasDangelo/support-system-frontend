@@ -93,3 +93,26 @@
     color: white;
     margin-left: auto;
   }
+
+
+
+  option{
+    background: #c4c3c3;
+    &:hover{
+      background: #666;
+    }
+    &:checked{
+      background-color: rgb(57, 57, 255);
+    }
+  }
+
+  ::picker(select){
+    border-color: #333;
+    border-radius: 8px;
+    margin-bottom: 2px;
+
+  }
+
+  .sortBtn{
+    margin-top: 1rem;
+  }

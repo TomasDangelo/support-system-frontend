@@ -18,10 +18,13 @@ const translationsES = {
   archive: "Archivar",
   sortOldest: "Ordenar ascendentemente ↑",
   sortNewest: "Ordenar descendentemente ↓",
+  closedBy: "Cerrado por",
+  note: "Nota: ",
   actions: {
     update_status: "Cambio de estado",
     update_priority: "Cambio de prioridad",
-    update_content: "Modificación del contenido"
+    update_content: "Modificación del contenido",
+    update_assigned: "Cambio de asignación",
   },
   statuses: {
     open: "Abierto",
