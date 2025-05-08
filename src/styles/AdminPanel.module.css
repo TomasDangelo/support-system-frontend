@@ -1,21 +1,22 @@
 .tableParent {
-    width: 100%;
+  width: 100%;
     border-collapse: collapse;
-    margin-bottom: 2rem;
+    border: none;
+    margin: 1rem 0;
     overflow: hidden;
     border-radius: 8px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
   }
   
   .tHead {
-    background-color: #1e1e2f;
-
+    background-color: #4d4d6e;
     color: white;
+    text-align: left;
   }
   
   .tHead th {
     padding: 0.75rem;
-    text-align: center;
+
     font-weight: 500;
   }
   
@@ -23,14 +24,11 @@
     border: none;
   }
   
-  tbody tr {
-    border-bottom: 1px solid #e0e0e0; 
-  }
   
   .userData {
     padding: 0.75rem;
-    text-align: center;
     font-size: 0.95rem;
+    border: none;
     background-color: white;
   }
   
@@ -59,3 +57,10 @@
     margin-bottom: 2rem;
   }
   
+  .totalUsers{
+    text-align: center;
+  }
+
+  .searchInput{
+    width: 50%;
+  }

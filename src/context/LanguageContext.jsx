@@ -5,7 +5,7 @@ export const LanguageContext = createContext();
 const translationsES = {
   ticket: "Ticket",
   subject: "Asunto",
-  message: "Mensaje",
+  message: "Descripción",
   status: "Estado",
   priority: "Prioridad",
   createdAt: "Creado el",
@@ -19,7 +19,9 @@ const translationsES = {
   sortOldest: "Ordenar ascendentemente ↑",
   sortNewest: "Ordenar descendentemente ↓",
   closedBy: "Cerrado por",
+  assignedTo: "Asignado a",
   note: "Nota: ",
+  action: "Acciones",
   actions: {
     update_status: "Cambio de estado",
     update_priority: "Cambio de prioridad",
@@ -30,7 +32,6 @@ const translationsES = {
     open: "Abierto",
     closed: "Cerrado",
     in_progress: "En proceso",
-    archived: "Archivado"
   },
   priorities: {
     low: "Baja",

@@ -29,7 +29,7 @@ const handleSubmit = async e => {
     try {
         const token = localStorage.getItem('token')
         if(isEditing){  //PUT si actualizamos, POST si creamos
-            await axios.put('/tickets/update', {ticket_id: ticket.id, ...formData}, {headers: {Authorization: `Bearer ${token}`}})
+            await axios.put('/tickets/update', {...formData, ticket_id: ticket?.id}, {headers: {Authorization: `Bearer ${token}`}})
         }
         else{
             await axios.post('/tickets/create', formData, {headers: {Authorization: `Bearer ${token}`}})

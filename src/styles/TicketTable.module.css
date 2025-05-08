@@ -1,0 +1,75 @@
+.tableWrapper {
+    overflow-x: auto;
+    width: 100%;
+    margin: 1rem 0;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.05);
+  }
+  
+  .ticketTable {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #fff;
+    font-size: 0.95rem;
+  }
+  
+  .ticketTable th,
+  .ticketTable td {
+    padding: 0.75rem 1rem;
+    text-align: left;
+    border-bottom: 1px solid #e0e0e0;
+  }
+  
+  .ticketTable th {
+    background-color: #f5f5f5;
+    font-weight: 600;
+    color: #333;
+  }
+  
+  .ticketTable tr:hover {
+    background-color: #f9f9f9;
+  }
+  
+  .status {
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    font-weight: 500;
+  }
+  
+  .status.open {
+    color: #2e7d32;
+    background-color: #e8f5e9;
+  }
+  
+  .status.closed {
+    color: #c62828;
+    background-color: #ffebee;
+  }
+  .status.in_progress {
+    color: #1565c0;;
+    background-color: #ebefff;
+  }
+
+  
+  .viewBtn {
+    padding: 6px 12px;
+    font-size: 0.85rem;
+    background-color: #d21994;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .viewBtn:hover {
+    background-color: #1565c0;
+  }
+  .editBtn:hover {
+    background-color: #d21994;
+  }
+
+  .btnsParent{
+    display: flex;
+    flex-direction: row;
+    gap: 0.8rem;
+  }

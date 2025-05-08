@@ -1,33 +1,66 @@
-import React, { useState, useContext } from 'react';
-import styles from '../styles/TicketCard.module.css';
+import React, { useContext, useState } from 'react';
+import styles from '../styles/TicketTable.module.css'; // reutilizamos el módulo existente
 import { useNavigate } from 'react-router-dom';
-import TicketFormModal from './TicketFormModal';
 import { LanguageContext } from '../context/LanguageContext';
+import TicketFormModal from './TicketFormModal';
+import { MdEdit } from "react-icons/md";
+import { FaEye } from "react-icons/fa";
 
-const TicketCard = ({ ticket, onUpdate, users }) => {
-const [isEditing, setIsEditing] = useState(false);
-const {translations} = useContext(LanguageContext)
-const statusClassName = `${styles.status} ${ ticket.status === 'open' || ticket.status === 'in_progress' ? styles.statusOpen :  styles.statusClosed}`
+const TicketTable = ({ tickets, users, onUpdate }) => {
+  const { translations } = useContext(LanguageContext);
+  const navigate = useNavigate();
+  const [isEditing, setIsEditing] = useState(false);
+  const [selectedTicket, setSelectedTicket] = useState(null);
 
-const navigate = useNavigate()
+  const getAssignedName = (id) => {
+    const user = users.find(u => u.id === id);
+    return user ? user.name : 'No asignado';
+  };
+
   return (
-    <div className={styles.card}>
-      <h3 className={styles.title}>#{ticket.id} {ticket.subject}</h3>
-      <p className={styles.info}>{ticket.message}</p>
-      <p className={styles.date}>{translations.createdAt} {new Date(ticket.created_at).toLocaleString()}</p>
-      <div className={styles.meta}>
-        <span className={statusClassName}>  {translations.statuses[ticket.status].charAt(0).toUpperCase() + translations.statuses[ticket.status].slice(1)}</span>
-        <span className={styles.priority}> {translations.priorities[ticket.priority].charAt(0).toUpperCase() + translations.priorities[ticket.priority].slice(1)}</span>
-      </div>
-      
-      <div className={styles.btnsParent}>
-      <p>{ticket.assigned_to && users?.length > 0? ( <p> Asignado a: {users.find(u => u.id === ticket.assigned_to)?.name || 'No asignado'}</p> )   : 'No asignado'}</p>
+    <div className={styles.tableWrapper}>
+      <table className={styles.ticketTable}>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>{translations.subject}</th>
+            <th>{translations.priority}</th>
+            <th>{translations.status}</th>
+            <th>{translations.assignedTo}</th>
+            <th>{translations.createdAt}</th>
+            <th>{translations.action}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {tickets.map(ticket => (
+            <tr key={ticket.id}>
+              <td>#{ticket.id}</td>
+              <td>{ticket.subject}</td>
+              <td>{translations.priorities[ticket.priority]}</td>
+              <td>
+              <span className={`${styles.status} ${ticket.status === 'closed'? styles.closed : ticket.status === 'open'? styles.open : ticket.status === 'in_progress'? styles.in_progress : ''}`}>
+                    {translations.statuses[ticket.status]}
+              </span>
+              </td>
+              <td>{getAssignedName(ticket.assigned_to)}</td>
+              <td>{new Date(ticket.created_at).toLocaleString()}</td>
+              <td className={styles.btnsParent}>
+                <button className={styles.viewBtn} onClick={() => navigate(`/tickets/${ticket.id}`)}><FaEye /></button>
+                <button className={styles.editBtn} onClick={() => {
+                  setSelectedTicket(ticket);
+                  setIsEditing(true);
+                }}><MdEdit /></button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
 
-      <button className={styles.ticketButtons} onClick={() => navigate(`/tickets/${ticket.id}`)}>Ver detalles</button>
-      </div>
-      <TicketFormModal isOpen={isEditing} onClose={()=> setIsEditing(false)} ticket={ticket} onUpdated={onUpdate} />
+      {selectedTicket && (
+        <TicketFormModal isOpen={isEditing} onClose={() => setIsEditing(false)} ticket={selectedTicket} users={users} onUpdated={onUpdate}/>
+      )}
     </div>
   );
 };
 
-export default TicketCard;
+export default TicketTable;

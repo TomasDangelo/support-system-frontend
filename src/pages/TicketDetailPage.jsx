@@ -175,25 +175,23 @@ const TicketDetailPage = () => {
             let oldValue = log.old_value;
             let newValue = log.new_value;
 
-                try {
-                 if (log.action === 'update_assigned') {
-                   oldValue = getUserNameById(log.old_value);
-                   newValue = getUserNameById(log.new_value);
-                 } else if (isJson(log.old_value) && isJson(log.new_value)) {
-                   const parsedOld = JSON.parse(log.old_value);
-                   const parsedNew = JSON.parse(log.new_value);
-                   oldValue = `${translations.subject}: ${parsedOld.subject}, ${translations.message}: ${parsedOld.message}`;
-                   newValue = `${translations.subject}: ${parsedNew.subject}, ${translations.message}: ${parsedNew.message}`;
-                 }
-                 else if (log.action === 'close_ticket') {
-                  oldValue = translations.status + ": " + translations.closed;
-                  newValue = log.note ? translations.note + ": " + log.note : "";
-                }
-                
-                  }                
-                 catch (e) {
-                 console.error("Error parseando", e);
-                }
+            try {
+              if (log.action === 'update_assigned') {
+                oldValue = getUserNameById(log.old_value);
+                newValue = getUserNameById(log.new_value);
+              } else if (log.action === 'update_status') {
+                oldValue = translations.statuses[log.old_value] || log.old_value;
+                newValue = translations.statuses[log.new_value] || log.new_value;
+              } else if (isJson(log.old_value) && isJson(log.new_value)) {
+                const parsedOld = JSON.parse(log.old_value);
+                const parsedNew = JSON.parse(log.new_value);
+                oldValue = `${translations.subject}: ${parsedOld.subject}, ${translations.message}: ${parsedOld.message}`;
+                newValue = `${translations.subject}: ${parsedNew.subject}, ${translations.message}: ${parsedNew.message}`;
+              }
+            } catch (e) {
+              console.error("Error parseando", e);
+            }
+            
 
             return (
               <li key={log.id || index} className={styles.logItem}>
@@ -201,7 +199,7 @@ const TicketDetailPage = () => {
                 <div className={styles.logChange}>
                   <p>{translations.oldValue}:</p>
                   <p className={styles.oldValue}><em>{oldValue}</em></p>
-                  <p> {translations.newValue}: →</p>
+                  <p>{translations.newValue} →</p>
                   <p className={styles.newValue}>{newValue}</p>
                 </div>
                 <hr />

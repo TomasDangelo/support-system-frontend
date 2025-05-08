@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from '../api/axios';
-import TicketCard from '../components/TicketCard';
+import TicketTable from '../components/TicketCard';
 import styles from '../styles/DashboardPage.module.css';
 import TicketFormModal from '../components/TicketFormModal';
 import { FaFilter } from "react-icons/fa";
@@ -112,9 +112,7 @@ const Dashboard = () => {
 
       <div className={styles.cardsContainer}>
         {tickets.length > 0 ? (
-          tickets.map(ticket => (
-            <TicketCard key={ticket.id} ticket={ticket} onUpdate={fetchTickets} users={users} />
-          ))
+          <TicketTable tickets={tickets} users={users} onUpdate={fetchTickets} />
         ) : (
           <p>No hay tickets que coincidan con los filtros.</p>
         )}

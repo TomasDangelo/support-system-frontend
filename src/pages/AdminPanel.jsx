@@ -54,17 +54,19 @@ const AdminPanel = () => {
     return (
         <div className={styles.panelContainer}>
           <h1 className={styles.panelTitle}>Panel de Administración</h1>
-          <input type="text" placeholder="Buscar usuario..." value={query} onChange={e => setQuery(e.target.value)}/>
+          <input className={styles.searchInput} type="text" placeholder="Buscar usuario..." value={query} onChange={e => setQuery(e.target.value)}/>
         
         {loading? (
-            <p>Total de usuarios: <strong>{totalUsers}</strong></p>
+            <p>Cargando...</p>
         ) : (
             <>
             <UserTable users={users} onRoleChange={setUsers} />
+            <h3 className={styles.totalUsers}> Total de usuarios: <strong>{totalUsers}</strong></h3>
           <div className={styles.pagesContainer}>
             <button disabled={page <= 1} onClick={() => setPage(p => p - 1)}>Anterior</button>
             <span className={styles.page}>Página {page} de {totalPages}</span>
             <button disabled={page >= totalPages} onClick={() => setPage(p => p + 1)}>Siguiente</button>
+            
           </div>
             </>
         )}
