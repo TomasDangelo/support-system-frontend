@@ -36,7 +36,7 @@ const TicketDetailPage = () => {
 
   const getUserNameById = (id) => {
     const match = users.find(u => u.id == id);
-    return match ? match.name : `ID: ${id}`;
+    return match ? match.name : "---";
   };
   
   
@@ -44,8 +44,6 @@ const TicketDetailPage = () => {
     try {
       await axios.put('/tickets/update', {
         ticket_id: ticket.id,
-        subject: ticket.subject,
-        message: ticket.message,
         status: 'closed',
         notes: note, 
       }, {
@@ -126,8 +124,12 @@ const TicketDetailPage = () => {
       <p><strong>{translations.priority}:</strong> {translations.priorities[ticket.priority] || ticket.priority}</p>
       <p><strong>{translations.createdAt}:</strong> {ticket.created_at}</p>
       <p><strong>Asignado a:</strong> { users.find(u => u.id === ticket.assigned_to)?.name || 'No asignado'}</p>
-      <p><strong>Cerrado por:</strong> {ticket.closed_by || '---'}</p>
-      <p><strong>Nota de cierre:</strong> {ticket.closing_note || '---'}</p>
+      {ticket.status === 'closed' && (
+      <>
+      <p><strong>Cerrado por:</strong> {getUserNameById(ticket.closed_by) || '---'}</p>
+      <p><strong>Nota de cierre:</strong> {ticket.notes || '---'}</p>
+      </>
+      )}
       <div className={styles.btnsParent}>
 
         {ticket.status !== 'closed' && users.length > 0 && (

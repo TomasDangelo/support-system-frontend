@@ -12,7 +12,7 @@ const statusClassName = `${styles.status} ${ ticket.status === 'open' || ticket.
 const navigate = useNavigate()
   return (
     <div className={styles.card}>
-      <h3 className={styles.title}>{ticket.subject}</h3>
+      <h3 className={styles.title}>#{ticket.id} {ticket.subject}</h3>
       <p className={styles.info}>{ticket.message}</p>
       <p className={styles.date}>{translations.createdAt} {new Date(ticket.created_at).toLocaleString()}</p>
       <div className={styles.meta}>
